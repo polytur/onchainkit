@@ -12,8 +12,14 @@ import { useTheme } from '../contexts/Theme.tsx';
 
 const queryClient = new QueryClient();
 
+// Default value to avoid build errors when running locally.
+const DEFAULT_DEMO_PK =
+  '0x1234567890123456789012345678901234567890123456789012345678901234';
+
 const demoWalletConnector = () => () => {
-  const demoWalletPK = process.env.VITE_DEMO_WALLET_PRIVATE_KEY;
+  // Demo account with no real assets
+  const demoWalletPK = import.meta.env.VITE_DEMO_WALLET_PK || DEFAULT_DEMO_PK;
+
   const account = privateKeyToAccount(demoWalletPK as `0x${string}`);
 
   const client = createWalletClient({
@@ -33,8 +39,12 @@ const demoWalletConnector = () => () => {
       };
     },
     async switchChain({ chainId }: { chainId: number }) {
-      if (chainId === baseSepolia.id) return baseSepolia;
-      if (chainId === base.id) return base;
+      if (chainId === baseSepolia.id) {
+        return baseSepolia;
+      }
+      if (chainId === base.id) {
+        return base;
+      }
       throw new Error('Unsupported chain');
     },
     async disconnect() {},
