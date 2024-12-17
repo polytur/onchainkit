@@ -12,15 +12,13 @@ import { useTheme } from '../contexts/Theme.tsx';
 
 const queryClient = new QueryClient();
 
-// Default value to avoid build errors when running locally.
-const DEFAULT_DEMO_PK =
-  '0x1234567890123456789012345678901234567890123456789012345678901234';
+// WARNING: This is a publicly visible demo/test account with absolutely no real assets or value.
+// It is used ONLY for documentation examples and should NEVER be used in production or to store any assets.
+const DUMMY_PK =
+  '0xa67bdd8a49324aa36cb3f7f7064b9b560e3aa653b774be9793415c0a6fc62cf8';
 
 const demoWalletConnector = () => () => {
-  // Demo account with no real assets
-  const demoWalletPK = import.meta.env.VITE_DEMO_WALLET_PK || DEFAULT_DEMO_PK;
-
-  const account = privateKeyToAccount(demoWalletPK as `0x${string}`);
+  const account = privateKeyToAccount(DUMMY_PK as `0x${string}`);
 
   const client = createWalletClient({
     account,
